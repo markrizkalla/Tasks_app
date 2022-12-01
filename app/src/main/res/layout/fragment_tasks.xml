@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".TasksFragment">
+
+    <data>
+        
+        <variable
+            name="viewModel"
+            type="com.example.tasksapp.TasksViewModel" />
+
+    </data>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/task_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Enter a task name"
+        android:text="@={viewModel.newTaskName}"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/save_button"
+        android:layout_gravity="center"
+        android:text="save task"
+        android:onClick="@{() -> viewModel.addTask()}"/>
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tasks"
+        android:text="@{viewModel.taskString}" />
+
+</LinearLayout>
+</layout>
