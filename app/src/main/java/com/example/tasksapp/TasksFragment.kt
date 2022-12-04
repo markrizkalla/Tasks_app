@@ -40,14 +40,16 @@ class TasksFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val adapter = TaskItemAdapter()
+        val adapter = TaskItemAdapter(dao)
         binding.tasksList.adapter = adapter
+
 
         viewModel.tasks.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
             }
         })
+
 
 
         return view

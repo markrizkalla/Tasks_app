@@ -12,6 +12,12 @@ class TasksViewModel(val dao:TaskDao) : ViewModel() {
 
 
 
+    fun updateTask(task: Task){
+        viewModelScope.launch {
+            dao.update(task)
+        }
+    }
+
     fun addTask(){
 
         viewModelScope.launch {
