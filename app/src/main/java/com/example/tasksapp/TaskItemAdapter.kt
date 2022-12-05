@@ -5,28 +5,20 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class TaskItemAdapter(var dao: TaskDao): RecyclerView.Adapter<TaskItemAdapter.TaskItemViewHolder>() {
+class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
 
-    var data = listOf<Task>()
-    set(value){
-        field = value
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskItemViewHolder {
         return TaskItemViewHolder.inflateFrom(parent)
     }
 
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
 
        holder.taskDone.setOnClickListener {
