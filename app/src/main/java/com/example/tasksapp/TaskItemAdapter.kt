@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tasksapp.databinding.TaskItemBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskIt
         val item = getItem(position)
         holder.bind(item)
 
-       holder.taskDone.setOnClickListener {
+       holder.binding.taskDone.setOnClickListener {
            GlobalScope.launch {
                if (item.taskDone){
                    item.taskDone = false
@@ -37,21 +38,19 @@ class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskIt
 
 
 
-    class TaskItemViewHolder(rootView:CardView): RecyclerView.ViewHolder(rootView) {
-        var taskName = rootView.findViewById<TextView>(R.id.task_name)
-        var taskDone = rootView.findViewById<CheckBox>(R.id.task_done)
+    class TaskItemViewHolder(val binding: TaskItemBinding): RecyclerView.ViewHolder(binding.root) {
+
 
         companion object{
             fun inflateFrom(parent: ViewGroup):TaskItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.task_item,parent,false) as CardView
-                return TaskItemViewHolder(view)
+                val binding = TaskItemBinding.inflate(layoutInflater,parent,false)
+                return TaskItemViewHolder(binding)
             }
         }
 
         fun bind(item : Task){
-            taskName.text = item.taskName
-            taskDone.isChecked = item.taskDone
+            binding.task = item
         }
     }
 
