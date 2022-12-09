@@ -4,14 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasksapp.databinding.TaskItemBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
+class TaskItemAdapter(val clickListener : (taskId:Long) -> Unit): ListAdapter<Task,TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskItemViewHolder {
@@ -20,19 +22,7 @@ class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskIt
 
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
-
-       holder.binding.taskDone.setOnClickListener {
-           GlobalScope.launch {
-               if (item.taskDone){
-                   item.taskDone = false
-                   dao.update(item)
-               }else{
-                   item.taskDone = true
-                   dao.update(item)
-               }
-           }
-       }
+        holder.bind(item,clickListener)
 
     }
 
@@ -49,8 +39,11 @@ class TaskItemAdapter(var dao: TaskDao): ListAdapter<Task,TaskItemAdapter.TaskIt
             }
         }
 
-        fun bind(item : Task){
+        fun bind(item : Task,clickListener: (taskId: Long) -> Unit){
             binding.task = item
+            binding.root.setOnClickListener {
+                clickListener(item.taskId)
+            }
         }
     }
 
