@@ -17,11 +17,7 @@ class TasksViewModel(val dao:TaskDao) : ViewModel() {
     val navigateToTask : LiveData<Long?>
       get() = _navigateToTask
 
-    fun updateTask(task: Task){
-        viewModelScope.launch {
-            dao.update(task)
-        }
-    }
+
 
     fun addTask(){
 
